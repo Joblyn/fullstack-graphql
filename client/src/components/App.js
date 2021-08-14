@@ -1,5 +1,5 @@
 import { Switch, Route } from 'react-router-dom'
-import React, {Fragment} from 'react'
+import React, { Fragment } from 'react'
 import Header from './Header'
 import Pets from '../pages/Pets'
 

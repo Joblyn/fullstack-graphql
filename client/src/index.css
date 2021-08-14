@@ -1,4 +1,4 @@
-@import 'flexboxgrid';
+@import url(../../node_modules/flexboxgrid);
 
 :root {
   --bgColor: #EFEFEF;
