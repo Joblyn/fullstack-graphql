@@ -8,4 +8,4 @@ const client = new ApolloClient({
   cache
 })
 
-export default client
+export default client;  

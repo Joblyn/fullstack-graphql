@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PetBox from "../components/PetBox";
 import NewPet from "../components/NewPet";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
+import { useQuery } from 'react-apollo';
 import Loader from "../components/Loader";
 
 const query = gql`
