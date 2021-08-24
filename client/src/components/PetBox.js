@@ -10,4 +10,4 @@ const PetBox = ({pet}) => (
   </div>
 )
 
-export default PetBox
+export default PetBox;

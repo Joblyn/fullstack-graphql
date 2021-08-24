@@ -1,35 +1,52 @@
 import React, { useState, useEffect } from "react";
 import PetBox from "../components/PetBox";
 import NewPet from "../components/NewPet";
-import { useMutation, gql } from "@apollo/client";
-import { useQuery } from 'react-apollo';
+import gql from 'graphql-tag';
+import { useQuery, useMutation } from 'react-apollo';
 import Loader from "../components/Loader";
+import PetsList from '../components/petslist';
 
-const query = gql`
-  query petsQuery {
+const ALL_PETS = gql`
+  query AllPets {
     pets {
-      name
       id
+      name
+      type
       img
     }
   }
 `;
+
+const CREATE_PET = gql`
+  mutation createAPet($newPet: newPetInput) {
+    addPet(input: $newPet) {
+      id
+      name
+      type
+      img
+    }
+  }
+`;
+
 export default function Pets() {
   const [modal, setModal] = useState(false);
-  const [{ data, loading }] = useQuery(query);
+  const { data, loading, error } = useQuery(ALL_PETS);
+  const [createPet, newPet] = useMutation(CREATE_PET);
 
   const onSubmit = (input) => {
     setModal(false);
+    createPet({"newPet": {"name": "batman", "type": "DOG"}})
   };
 
-  // const petsList = pets.data.pets.map((pet) => (
-  //   <div className="col-xs-12 col-md-4 col" key={pet.id}>
-  //     <div className="box">
-  //       <PetBox pet={pet} />
-  //     </div>
-  //   </div>
-  // ));
-  const petsList = <div>Pets List</div>;
+  if(loading || newPet.loading) {
+    return Loader
+  }
+
+  if (error || newPet.error) {
+    return <p>error!</p>
+  }
+
+
 
   if (modal) {
     return (
@@ -55,7 +72,7 @@ export default function Pets() {
         </div>
       </section>
       <section>
-        <div className="row">{petsList}</div>
+        <div className="row"><PetsList pets={data.pets}/></div>
       </section>
     </div>
   );
