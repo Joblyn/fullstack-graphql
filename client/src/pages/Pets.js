@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PetBox from "../components/PetBox";
 import NewPet from "../components/NewPet";
-import gql from 'graphql-tag';
-import { useQuery, useMutation } from 'react-apollo';
+import gql from "graphql-tag";
+import { useQuery, useMutation } from "react-apollo";
 import Loader from "../components/Loader";
-import PetsList from '../components/petslist';
+import PetsList from "../components/petslist";
 
 const ALL_PETS = gql`
   query AllPets {
@@ -33,20 +33,20 @@ export default function Pets() {
   const { data, loading, error } = useQuery(ALL_PETS);
   const [createPet, newPet] = useMutation(CREATE_PET);
 
-  const onSubmit = (input) => {
+  const onSubmit = input => {
     setModal(false);
-    createPet({"newPet": {"name": "batman", "type": "DOG"}})
+    createPet({
+      variables: { newPet: input }
+    });
   };
 
-  if(loading || newPet.loading) {
-    return Loader
+  if (loading || newPet.loading) {
+    return Loader;
   }
 
   if (error || newPet.error) {
-    return <p>error!</p>
+    return <p>error!</p>;
   }
-
-
 
   if (modal) {
     return (
@@ -72,7 +72,9 @@ export default function Pets() {
         </div>
       </section>
       <section>
-        <div className="row"><PetsList pets={data.pets}/></div>
+        <div className="row">
+          <PetsList pets={data.pets} />
+        </div>
       </section>
     </div>
   );
